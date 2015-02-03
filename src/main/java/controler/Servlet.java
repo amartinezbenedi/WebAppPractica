@@ -36,26 +36,32 @@ public class Servlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-		PrintWriter out = response.getWriter();
-		String id = request.getParameter("id");
-		System.out.println(id);
-		response.setContentType("text/html");
+		//PrintWriter out = response.getWriter();
+		//System.out.println(id);
+		//response.setContentType("text/html");
+		
+		String id = request.getParameter("id");	
+
 		try {
+			
 			apVO = apDAO.detalleAparcamientos(Integer.parseInt(id));
+			request.setAttribute("apVO", apVO);
+			request.getRequestDispatcher("Parametros.jsp").forward(request, response);
 			
 			//manera de escribir en la apgina web con los sevlets
-			out.println("<html>");
+			/*out.println("<html>");
 			out.println("<body>");
 			out.println("<h1> " + apVO.toString() + "</h1>");
 			out.println("</body>");
-			out.println("</html>");
+			out.println("</html>");*/
+			
 		} catch (Exception e) {
 
-			out.println("<html>");
-			out.println("<body>");
-			out.println("<h1> fallo </h1>");
-			out.println("</body>");
-			out.println("</html>");
+			//out.println("<html>");
+			//out.println("<body>");
+			//out.println("<h1> fallo </h1>");
+			//out.println("</body>");
+			//out.println("</html>");
 		}
 
 	}
