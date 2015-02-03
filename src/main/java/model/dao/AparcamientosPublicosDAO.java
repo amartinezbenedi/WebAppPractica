@@ -14,85 +14,66 @@ import java.util.logging.Logger;
 import model.vo.AparcamientosPublicosVO;
 import model.vo.Punto;
 
-
-
 public class AparcamientosPublicosDAO {
- 
 
 	public static Logger logger = Logger
 			.getLogger(AparcamientosPublicosDAO.class.getName());
 
 	// Listado de aparcamientos
 
-	public List<AparcamientosPublicosVO> getListadoAparcamientos(){
+	public List<AparcamientosPublicosVO> getListadoAparcamientos()
+			throws ClassNotFoundException {
 		List<AparcamientosPublicosVO> aparcamientos = new ArrayList<AparcamientosPublicosVO>();
 		String query = "select ID,LASTUPDATED,ICON,TITLE,HORARIO,ACCESOPEATON,ACCESOS,ACCESOVEHICULO,COORDX,COORDY"
 				+ " from EQ4_APARCA";
-		
-		//String query2 = "select * from EQ4_APARCA WHERE ACCESOPEATON = ?";
-		//String query3 = "INSERT INTO EQ4_APARCA (ID,LASTUPDATED,ICON,TITLE,HORARIO,ACCESOPEATON,ACCESOS,ACCESOVEHICULO,COORDX,COORDY) VALUES ("
-		//		+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		//String query4 = "INSERT INTO EQ4_APARCA (ID) VALUES (?)";	
-		
+
+		// String query2 = "select * from EQ4_APARCA WHERE ACCESOPEATON = ?";
+		// String query3 =
+		// "INSERT INTO EQ4_APARCA (ID,LASTUPDATED,ICON,TITLE,HORARIO,ACCESOPEATON,ACCESOS,ACCESOVEHICULO,COORDX,COORDY) VALUES ("
+		// + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		// String query4 = "INSERT INTO EQ4_APARCA (ID) VALUES (?)";
+
 		Statement st = null;
 		ResultSet rs = null;
-		
+
 		ConsultaOrcl co = new ConsultaOrcl();
-		Connection conection =  co.conexion();
-		
-		//transacciones
-		/*try{
-			conection.setAutoCommit(false);
-			for(int i = 1;i <= 3; i++){			
-				int id = (int) Math.floor(Math.random()*15+5);
-				st = conection.prepareStatement(query4);
-				st.setInt(1, id);
-				int m = st.executeUpdate();
-				System.out.println("Numero de lineas modificadas= " + m);
-				System.out.println(id);
-					if ((i < 1) && !((id%2) == 0)){			
-						conection.commit();
-						System.out.println("Hago commit");
-						
-					}else if((i < 1) && ((id%2) == 0)){
-						System.out.println("Hago rollback");
-						conection.rollback();
-					}
-				
-			}	
-			conection.setAutoCommit(true);
-			
-		}catch(SQLException e){
-			logger.log(Level.SEVERE, e.getMessage());	
-			try{
-			conection.rollback();
-			}catch(Exception e2){
-				logger.log(Level.SEVERE, e2.getMessage());	
-			}
-		}catch(NullPointerException ex){
-			logger.log(Level.SEVERE, ex.getMessage());	
-			try{
-				conection.rollback();
-				}catch(Exception e2){
-					logger.log(Level.SEVERE, e2.getMessage());	
-				}
-		}*/
-	
-		
-		//CallableStatement
-		/*try{
-		CallableStatement cst = conection.prepareCall("{?=call NUMERO}");
-		cst.registerOutParameter(1, java.sql.Types.TINYINT);
-		//cst.setInt(2, 1);
-		cst.executeQuery();
-		int res = cst.getInt(1);
-		System.out.println("Resultado callableStatement= " + res);
-		}catch(NullPointerException e){
-			logger.log(Level.SEVERE, e.getMessage());	
-		}catch(SQLException ex){	
-			logger.log(Level.SEVERE, ex.getMessage());
-		}*/
-		
+		Connection conection = co.conexion();
+
+		// transacciones
+		/*
+		 * try{ conection.setAutoCommit(false); for(int i = 1;i <= 3; i++){ int
+		 * id = (int) Math.floor(Math.random()*15+5); st =
+		 * conection.prepareStatement(query4); st.setInt(1, id); int m =
+		 * st.executeUpdate();
+		 * System.out.println("Numero de lineas modificadas= " + m);
+		 * System.out.println(id); if ((i < 1) && !((id%2) == 0)){
+		 * conection.commit(); System.out.println("Hago commit");
+		 * 
+		 * }else if((i < 1) && ((id%2) == 0)){
+		 * System.out.println("Hago rollback"); conection.rollback(); }
+		 * 
+		 * } conection.setAutoCommit(true);
+		 * 
+		 * }catch(SQLException e){ logger.log(Level.SEVERE, e.getMessage());
+		 * try{ conection.rollback(); }catch(Exception e2){
+		 * logger.log(Level.SEVERE, e2.getMessage()); }
+		 * }catch(NullPointerException ex){ logger.log(Level.SEVERE,
+		 * ex.getMessage()); try{ conection.rollback(); }catch(Exception e2){
+		 * logger.log(Level.SEVERE, e2.getMessage()); } }
+		 */
+
+		// CallableStatement
+		/*
+		 * try{ CallableStatement cst =
+		 * conection.prepareCall("{?=call NUMERO}"); cst.registerOutParameter(1,
+		 * java.sql.Types.TINYINT); //cst.setInt(2, 1); cst.executeQuery(); int
+		 * res = cst.getInt(1);
+		 * System.out.println("Resultado callableStatement= " + res);
+		 * }catch(NullPointerException e){ logger.log(Level.SEVERE,
+		 * e.getMessage()); }catch(SQLException ex){ logger.log(Level.SEVERE,
+		 * ex.getMessage()); }
+		 */
+
 		try {
 			st = conection.createStatement();
 			rs = st.executeQuery(query);
@@ -113,10 +94,10 @@ public class AparcamientosPublicosDAO {
 				int y = rs.getInt(10);
 
 				punto = new Punto(x, y);
-				
+
 				AparcamientosPublicosVO aparcamiento = new AparcamientosPublicosVO(
-						punto, horario, title, icon, accesos, fecha, accesoPeaton,
-						accesoVehiculo, id);
+						punto, horario, title, icon, accesos, fecha,
+						accesoPeaton, accesoVehiculo, id);
 
 				aparcamientos.add(aparcamiento);
 			}
@@ -126,10 +107,9 @@ public class AparcamientosPublicosDAO {
 		catch (NullPointerException e) {
 
 			logger.log(Level.SEVERE, e.getMessage());
-		}
-		catch (SQLException ex){
+		} catch (SQLException ex) {
 			logger.log(Level.SEVERE, ex.getMessage());
-		
+
 		} finally {
 			if (rs != null) {
 				try {
@@ -148,19 +128,20 @@ public class AparcamientosPublicosDAO {
 
 		return aparcamientos;
 	}
-	
-	public AparcamientosPublicosVO detalleAparcamientos(int id){
-		
+
+	public AparcamientosPublicosVO detalleAparcamientos(int id)
+			throws ClassNotFoundException {
+
 		AparcamientosPublicosVO aparcamiento = null;
-		
+
 		String query = "select ID,LASTUPDATED,ICON,TITLE,HORARIO,ACCESOPEATON,ACCESOS,ACCESOVEHICULO,COORDX,COORDY"
 				+ " from EQ4_APARCA WHERE ID = " + id;
-		
+
 		Statement st = null;
 		ResultSet rs = null;
-		
+
 		ConsultaOrcl co = new ConsultaOrcl();
-		Connection conection =  co.conexion();
+		Connection conection = co.conexion();
 		try {
 			st = conection.createStatement();
 			rs = st.executeQuery(query);
@@ -181,9 +162,9 @@ public class AparcamientosPublicosDAO {
 				int y = rs.getInt(10);
 
 				punto = new Punto(x, y);
-				
-				aparcamiento = new AparcamientosPublicosVO(
-						punto, horario, title, icon, accesos, fecha, accesoPeaton,
+
+				aparcamiento = new AparcamientosPublicosVO(punto, horario,
+						title, icon, accesos, fecha, accesoPeaton,
 						accesoVehiculo, id);
 
 			}
@@ -193,10 +174,9 @@ public class AparcamientosPublicosDAO {
 		catch (NullPointerException e) {
 
 			logger.log(Level.SEVERE, e.getMessage());
-		}
-		catch (SQLException ex){
+		} catch (SQLException ex) {
 			logger.log(Level.SEVERE, ex.getMessage());
-		
+
 		} finally {
 			if (rs != null) {
 				try {
