@@ -38,9 +38,12 @@ public class Servlet extends HttpServlet {
 
 		PrintWriter out = response.getWriter();
 		String id = request.getParameter("id");
+		System.out.println(id);
+		response.setContentType("text/html");
 		try {
 			apVO = apDAO.detalleAparcamientos(Integer.parseInt(id));
-
+			
+			//manera de escribir en la apgina web con los sevlets
 			out.println("<html>");
 			out.println("<body>");
 			out.println("<h1> " + apVO.toString() + "</h1>");
