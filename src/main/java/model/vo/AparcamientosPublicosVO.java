@@ -28,6 +28,9 @@ public class AparcamientosPublicosVO {
 		this.accesoVehiculo = accesoVehiculo;
 		this.id = id;
 	}
+	public AparcamientosPublicosVO() {
+		// TODO Auto-generated constructor stub
+	}
 	public String getIcon() {
 		return icon;
 	}
