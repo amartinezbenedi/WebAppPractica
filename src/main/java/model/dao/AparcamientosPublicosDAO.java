@@ -11,6 +11,11 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import model.vo.AparcamientosPublicosVO;
 import model.vo.Punto;
 
@@ -22,7 +27,7 @@ public class AparcamientosPublicosDAO {
 	// Listado de aparcamientos
 
 	public List<AparcamientosPublicosVO> getListadoAparcamientos()
-			throws ClassNotFoundException {
+			throws ClassNotFoundException, NamingException, SQLException {
 		List<AparcamientosPublicosVO> aparcamientos = new ArrayList<AparcamientosPublicosVO>();
 		String query = "select ID,LASTUPDATED,ICON,TITLE,HORARIO,ACCESOPEATON,ACCESOS,ACCESOVEHICULO,COORDX,COORDY"
 				+ " from EQ4_APARCA";
@@ -35,10 +40,12 @@ public class AparcamientosPublicosDAO {
 
 		Statement st = null;
 		ResultSet rs = null;
-
+	
 		ConsultaOrcl co = new ConsultaOrcl();
 		Connection conection = co.conexion();
+		
 
+		
 		// transacciones
 		/*
 		 * try{ conection.setAutoCommit(false); for(int i = 1;i <= 3; i++){ int
@@ -130,7 +137,7 @@ public class AparcamientosPublicosDAO {
 	}
 
 	public AparcamientosPublicosVO detalleAparcamientos(int id)
-			throws ClassNotFoundException {
+			throws ClassNotFoundException, NamingException, SQLException {
 
 		AparcamientosPublicosVO aparcamiento = null;
 
@@ -139,7 +146,7 @@ public class AparcamientosPublicosDAO {
 
 		Statement st = null;
 		ResultSet rs = null;
-
+			
 		ConsultaOrcl co = new ConsultaOrcl();
 		Connection conection = co.conexion();
 		try {

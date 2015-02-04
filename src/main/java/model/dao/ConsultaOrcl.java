@@ -4,6 +4,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.*;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 public class ConsultaOrcl {
 
 	private Connection con = null;
@@ -13,8 +18,8 @@ public class ConsultaOrcl {
 	private StringWriter sw = null;
 
 	// Esta sirve para conectarse a la base de Datos
-	public Connection conexion() throws ClassNotFoundException {
-		try {
+	public Connection conexion() throws ClassNotFoundException, NamingException, SQLException {
+		/*try {
 			String driver = "oracle.jdbc.driver.OracleDriver";
 
 			String host = "54.154.192.80";
@@ -31,9 +36,15 @@ public class ConsultaOrcl {
 		} catch (SQLException e) {
 			pw = new PrintWriter(sw);
 			e.printStackTrace(pw);
-		}
+		}*/
+		
+		Context initContext = new InitialContext();
+		Context envContext = (Context) initContext.lookup("java:/comp/env");
+		DataSource ds = (DataSource)envContext.lookup("jdbc/myoracle");
+		Connection con = ds.getConnection();
 
 		return con;
+		
 
 	}
 
